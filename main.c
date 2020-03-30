@@ -9,5 +9,6 @@ int main() {
     test.spo2 = 103;
     affichage(test);
 
+
     return 0;
 }
