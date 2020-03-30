@@ -4,9 +4,7 @@
 
 int main() {
 
-    oxy test;
-    test.pouls = 192;
-    test.spo2 = 103;
+
     affichage(test);
 
     return 0;
