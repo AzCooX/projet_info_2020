@@ -6,3 +6,6 @@ oxy mesureTest(char* filename){
 
 }
 
+oxy mesure(absorp myAbsorp, param_mesure* myMes){
+
+}
