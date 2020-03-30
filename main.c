@@ -1,6 +1,13 @@
 #include <stdio.h>
+#include "define.h"
+#include "affichage.h"
 
 int main() {
-    printf("Hello Harold!\n");
+
+    oxy test;
+    test.pouls = 192;
+    test.spo2 = 103;
+    affichage(test);
+
     return 0;
 }
