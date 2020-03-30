@@ -15,6 +15,10 @@ myIIR.led=myAbsorp.acr-myIIR.lastEntryLed+0.992*myIIR.lastLed;
 myIIR.lastEntryLed=myAbsorp.acr;
 myIIR.lastLed=myIIR.led;
 
+myIIR.infrarouge=myAbsorp.acir-myIIR.lastEntryInfrarouge+0.992*myIIR.lastInfrarouge;
+myIIR.lastEntryInfrarouge=myAbsorp.acir;
+myIIR.lastInfrarouge=myIIR.infrarouge;
+
 }
 
 void fin_iir(param_iir* myIIR){
