@@ -28,15 +28,21 @@ void fin_iir(param_iir* myIIR){
 }
 absorp iirTest(char* filename){
     int etat=0;
+    param_iir* myIIR = init_iir();
 	absorp	myAbsorp;
-	FILE* myfile = initFichier(filename);
-    param_iir* myIIR= init_iir();
-	myAbsorp=lireFichier(myfile,&etat);
-	finFichier(myfile);
-    myAbsorp= iir(myAbsorp,myIIR);
-
-    printf('myAbsorp.acr');
-	return myAbsorp;
-
+	FILE* myFile = initFichier(filename);
+    do
+    {
+        absorp readData = lireFichier(myFile, &etat); //Lecture des données
+        if(!(readData.dcir == 0 && readData.dcr == 0 && readData.acir == 0 && readData.acr == 0)) //On vérifie que les données sont valides
+        {
+            myAbsorp = iir(readData, myIIR); //Filtrage IIR pour ACR et ACIR
+            //printf(myAbsorp.acr,'%f\n');
+        }
+    }
+    while(etat != EOF);
+    fin_iir(myIIR);
+	finFichier(myFile);
+    return myAbsorp;
 }
 
