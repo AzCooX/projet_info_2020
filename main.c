@@ -5,6 +5,8 @@
 
 int main() {
 
-    printf("test");
+
+    affichage(test);
+
     return 0;
 }
