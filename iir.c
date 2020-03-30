@@ -34,6 +34,8 @@ absorp iirTest(char* filename){
 	myAbsorp=lireFichier(myfile,&etat);
 	finFichier(myfile);
     myAbsorp= iir(myAbsorp,myIIR);
+
+    printf('myAbsorp.acr');
 	return myAbsorp;
 
 }
