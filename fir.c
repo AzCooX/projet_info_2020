@@ -1,11 +1,12 @@
 #include "fir.h"
 
 param_fir* init_fir(){
+    int i;
     param_fir* myFIR = (param_fir*)malloc(1*sizeof(param_fir));
-    for(int i=0;i<=50;i++){     //initialise le tableau led à 0
+    for(i=0;i<=50;i++){     //initialise le tableau led à 0
         myFIR->led[i]=0;
     }
-    for(int i=0;i<=50;i++){     //initialise le tableau infrarouge à 0
+    for(i=0;i<=50;i++){     //initialise le tableau infrarouge à 0
         myFIR->infrarouge[i]=0;
     }
     myFIR->index=0;
@@ -13,6 +14,7 @@ param_fir* init_fir(){
 }
 
 absorp fir(absorp myAbsorp,param_fir* myFIR){
+    int i;
     float coef[51]={1.4774946e-019,1.6465231e-004,3.8503956e-004,7.0848037e-004,1.1840522e-003,1.8598621e-003,2.7802151e-003,
                     3.9828263e-003,5.4962252e-003,7.3374938e-003,9.5104679e-003,1.2004510e-002,1.4793934e-002,1.7838135e-002,
                     2.1082435e-002,2.4459630e-002,2.7892178e-002,3.1294938e-002,3.4578348e-002,3.7651889e-002,4.0427695e-002,
@@ -23,7 +25,7 @@ absorp fir(absorp myAbsorp,param_fir* myFIR){
                     1.6465231e-004,1.4774946e-019};
     myFIR->led[myFIR->index]=myAbsorp.acr;
     myFIR->infrarouge[myFIR->index]=myAbsorp.acir;
-    for(int i=myFIR->index;i==myFIR->index-1;i++%50){
+    for(i=myFIR->index;i==myFIR->index-1;i++%50){
         myAbsorp.acr+=coef[i]*myFIR->led[myFIR->index-i];     //pas sur
         myAbsorp.acir+=coef[i]*myFIR->infrarouge[myFIR->index-i];
     }
