@@ -1,5 +1,5 @@
 #include "iir.h"
-#include "fichiers.h"
+
 param_iir* init_iir(){      //initialise les membres d'une structure param_iir
     param_iir* myIIR = (param_iir*)malloc(1*sizeof(param_iir));
     myIIR->led=0;
@@ -30,7 +30,6 @@ void fin_iir(param_iir* myIIR){
 }
 absorp iirTest(char* filename){
     int etat=0;
-    float test;
     param_iir* myIIR = init_iir();
 	absorp	myAbsorp;
 	FILE* myFile = initFichier(filename);
