@@ -4,11 +4,14 @@
 #include "affichage.h"
 #include "iir.h"
 #include "fir.h"
+#include "lecture.h"
 int main() {
 
-
-   // affichage(test);
-    //iirTest("record1_fir.dat");
-    firTest("record1.dat");
+    if(lectureTest() == 1){
+        printf("C'est gagné");
+    }
+    else{
+        printf("c'est perdu");
+    };
     return 0;
 }
