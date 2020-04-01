@@ -35,6 +35,7 @@ absorp fir(absorp myAbsorp,param_fir* myFIR){
         myAbsorp.acr += coef[i] * myFIR->led[position];     //pas sur
         myAbsorp.acir += coef[i] * myFIR->infrarouge[position];
     }
+    myFIR->index=((myFIR->index)+1)%50;
     return myAbsorp;
 }
 
@@ -53,7 +54,6 @@ absorp firTest(char* filename){
         if(!(readData.dcir == 0 && readData.dcr == 0 && readData.acir == 0 && readData.acr == 0)) //On vérifie que les données sont valides
         {
             myAbsorp = fir(readData, myFIR); //Filtrage FIR pour ACR et ACIR
-            myFIR->index=((myFIR->index)+1)%50;
             printf("valeur ACR: %f\n",myAbsorp.acr);
             printf("valeur ACIR: %f\n",myAbsorp.acir);
         }

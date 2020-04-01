@@ -10,6 +10,8 @@ param_mesure* init_mesure(){
 	myMes->compteur=0;
 	myMes->previousVal=0;
 	myMes->indexPouls=0;
+	myMes->pouls=0;
+	myMes->spo2=0;
 	for(i=0;i<10;i++){
         myMes->oldPouls[i]=0;
 	}
@@ -19,8 +21,9 @@ void fin_mesure(param_mesure* myMes){
 	free(myMes);
 }
 
-oxy mesure(oxy myOxy,absorp myAbsorp, param_mesure* myMes){
+oxy mesure(absorp myAbsorp, param_mesure* myMes){
 
+	oxy myOxy;
 	float frequence;	//Calcul du pouls   ( pas oublier de faire la moyenne)
 	float ptpACR;
 	float ptpACIR;
@@ -31,7 +34,10 @@ oxy mesure(oxy myOxy,absorp myAbsorp, param_mesure* myMes){
 		frequence=frequence*60;     //obtention BPM
 		myMes->compteur=0;
 		myOxy.pouls=(int)frequence;
+		myMes->pouls=(int)frequence;
 
+	}else{
+		myOxy.pouls=myMes->pouls;
 	}
 	myMes->previousVal=myAbsorp.acr;
 	myMes->compteur=myMes->compteur+1;
@@ -69,7 +75,6 @@ oxy mesure(oxy myOxy,absorp myAbsorp, param_mesure* myMes){
         myMes->lastMaximumACIR=0;
         myMes->lastMinimumACR=0;
         myMes->lastMaximumACR=0;
-
     }
 	return myOxy;
 
@@ -87,7 +92,7 @@ oxy mesureTest(char* filename){
 		absorp readData = lireFichier(myFile, &etat); //Lecture des données
 		if(!(readData.dcir == 0 && readData.dcr == 0 && readData.acir == 0 && readData.acr == 0)) //On vérifie que les données sont valides
 		{
-			myOxy = mesure(myOxy,readData, myMes); //Calcul de SPO2 et du pouls
+			myOxy = mesure(readData, myMes); //Calcul de SPO2 et du pouls
 			printf("valeur SPO2: %d\n",myOxy.spo2);
 			printf("valeur Pouls: %d\n",myOxy.pouls);
 		}

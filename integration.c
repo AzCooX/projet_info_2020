@@ -1,5 +1,9 @@
 #include "integration.h"
-
+#include "define.h"
+#include "affichage.h"
+#include "iir.h"
+#include "fir.h"
+#include "mesure.h"
 void integrationTest(char* filename)    //rien include dans .h et tout dans .c?
 {
     int etat=0;
@@ -11,10 +15,15 @@ void integrationTest(char* filename)    //rien include dans .h et tout dans .c?
     FILE* myFile=initFichier("record1.dat");
     do{
         myAbsorp= lireFichier(myFile,&etat);
-        myAbsorp= fir(myAbsorp,myFIR);
-        myAbsorp= iir(myAbsorp,myIIR);
-        myOxy= mesure(myOxy,myAbsorp,myMes);
-        affichage(myOxy);
+        if(!(myAbsorp.dcir == 0 && myAbsorp.dcr == 0 && myAbsorp.acir == 0 && myAbsorp.acr == 0)) //On vérifie que les données sont valides
+        {
+            myAbsorp = fir(myAbsorp, myFIR);
+            myAbsorp = iir(myAbsorp, myIIR);
+            myOxy= mesure(myAbsorp,myMes);
+            printf("valeur SPO2: %d\n",myOxy.spo2);
+            printf("valeur Pouls: %d\n",myOxy.pouls);
+            affichage(myOxy);
+        }
     }while( etat!= EOF);
     finFichier(myFile);
     fin_mesure(myMes);
