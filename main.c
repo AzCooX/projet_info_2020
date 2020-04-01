@@ -11,6 +11,6 @@ int main() {
     //affichage(test);
     //iirTest("record1_fir.dat");
     //firTest("record1.dat");
-    mesureTest("record1_iir.dat");
+    //mesureTest("record1_iir.dat");
     return 0;
 }

@@ -21,8 +21,8 @@ typedef struct{
 
 param_iir* init_iir();
 
-absorp iir(absorp myAbsorp,param_iir* myFIR);
+absorp iir(absorp myAbsorp,param_iir* myIIR);
 
-void fin_iir(param_iir* myFIR) ;
+void fin_iir(param_iir* myIIR) ;
 
 absorp iirTest(char* filename);
