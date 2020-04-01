@@ -26,14 +26,15 @@ oxy mesure(oxy myOxy,absorp myAbsorp, param_mesure* myMes){
 	float ptpACIR;
 	float ratio;
 	int a,b;
-	/*if(myMes->previousVal<myAbsorp.acr && (myMes->previousVal)/(myAbsorp.acr)<0){	// si la nouvelle valeur et l'ancienne sont de signes opposés et que on est sur un front montant
+	if(myMes->previousVal<myAbsorp.acr && (myMes->previousVal)/(myAbsorp.acr)<0){	// si la nouvelle valeur et l'ancienne sont de signes opposés et que on est sur un front montant
 		frequence=(float)(1/((myMes->compteur)*0.002));
 		frequence=frequence*60;     //obtention BPM
-		myOxy.pouls=(int)frequence;
 		myMes->compteur=0;
+		myOxy.pouls=(int)frequence;
+
 	}
 	myMes->previousVal=myAbsorp.acr;
-	myMes->compteur=myMes->compteur+1;*/
+	myMes->compteur=myMes->compteur+1;
 
 	//Calcul SPO2
 
