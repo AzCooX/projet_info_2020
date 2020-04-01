@@ -3,29 +3,31 @@
 absorp lecture(FILE* file_pf, int* file_state) {
 
     absorp myAbsorp;
-    char trame[21];                                 // Je crée une chaine de 22 caractères en incluant
+    char trame[21];                                 // Je crée un buffer de 21 caractères
     int i;
-    int validTrame = 2;
+    int validTrame = 2;                             // Je crée une variable indiquant l'état
+                                                    // de la trame en cours
 
     do{
-        for (i=0; i < 21; i++) {
-            trame[i] = fgetc(file_pf);              // On copie le caractère dans le buffer
+        for (i=0; i < 21; i++) {                    // On veut recopier 21 caractères
+            trame[i] = fgetc(file_pf);              // On copie le caractère récupéré dans le buffer
 
-            if(trame[i] == EOF){                     // Si le caractère est un CR on relance à
+            if(trame[i] == EOF){                    // Si le caractère est EOF on passe validTrame à 1
                 *file_state = EOF;
                 validTrame = 1;
             }
-            else if(trame[i] == 13){               // Si fin du fichier on change l'état de file_state
-                if(i == 20){
-                    validTrame = 1;
+            else if(trame[i] == 13){                // Si le caractère récupéré est un CR
+                if(i == 20){                        // On vérifie s'il est en 20eme position du buffer
+                    validTrame = 1;                 // Si c'est le cas on met validTrame à 1
                 }
                 else{
-                    i = -1;
-                }
+                    i = -1;                         // Sinon on relance jusqu'à obtention d'un CR
+                }                                   // en mettant i à -1 (car incrémentation du for)
             }
         }
 
-    }while (validTrame != 1);
+    }while (validTrame != 1);                       // On recommence jusqu'à obtenir une trame valide càd
+                                                    //fin du fichier ou trame valide
 
     if (*file_state != EOF) {
         char *acr = malloc(5 * sizeof(char));       // Je déclare ensuite 4 char* différents correspondant
