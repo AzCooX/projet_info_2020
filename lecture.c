@@ -27,16 +27,17 @@ absorp lecture(FILE* file_pf, int* file_state) {
         }
 
     }while (validTrame != 1);                       // On recommence jusqu'à obtenir une trame valide càd
-                                                    //fin du fichier ou trame valide
+                                                    //fin du fichier ou une trame valide
 
-    if (*file_state != EOF) {
-        char *acr = malloc(5 * sizeof(char));       // Je déclare ensuite 4 char* différents correspondant
-        char *dcr = malloc(5 * sizeof(char));       // aux 4 valeurs différentes à récupérer
+    if (*file_state != EOF) {                       // Si ce n'est pas la fin de fichier on lance le traitement
+
+        char *acr = malloc(5 * sizeof(char));       // Je déclare 4 char* correspondant aux 4 valeurs
+        char *dcr = malloc(5 * sizeof(char));       // différentes à récupérer
         char *acir = malloc(5 * sizeof(char));
         char *dcir = malloc(5 * sizeof(char));
 
         int count = 0;                              // J'initialise un compteur qui va nous permettre
-        // de sélectionner la chaine où on souhaite écrire
+                                                    // de sélectionner la chaine où je souhaite écrire
         for (i = 0; i < 21; i++) {
             if ((i + 1) % 5 == 0) {                 // Tous les 4 octets, une virgule sépare les valeurs
                 count++;                            // on incrémente donc la valeur du compteur
@@ -66,22 +67,23 @@ absorp lecture(FILE* file_pf, int* file_state) {
         acir[5] = '\0';
         dcir[5] = '\0';
 
-        myAbsorp.acir = strtof(acir, &endptr) - 2048;      // Il ne reste plus qu'à assigner les différentes
-        myAbsorp.dcir = strtof(dcir, &endptr);      // valeurs à la structure myAbsorb en convertissant
-        myAbsorp.acr = strtof(acr, &endptr) - 2048;        // les char* en float
-        myAbsorp.dcr = strtof(dcr, &endptr);
+        myAbsorp.acir = strtof(acir, &endptr) - 2048;       // Il ne reste plus qu'à assigner les différentes
+        myAbsorp.dcir = strtof(dcir, &endptr);              // valeurs à la structure myAbsorb en convertissant
+        myAbsorp.acr = strtof(acr, &endptr) - 2048;         // les char* en float et en n'oubliant pas de centrer
+        myAbsorp.dcr = strtof(dcr, &endptr);                // les signaux acr
 
-        free(acir);                                 // Enfin, on désalloue l'espace mémoire occupé
-        free(acr);                                  // par nos chaines de caractères
+        free(acir);                                         // Enfin, on désalloue l'espace mémoire occupé
+        free(acr);                                          // par nos chaines de caractères
         free(dcr);
         free(dcir);
 
-        return myAbsorp;                            // return EOF flag*
+        return myAbsorp;                                    // On retourne notre structure absorp
 
     } else {
-        myAbsorp.acir = 0;      // Il ne reste plus qu'à assigner les différentes
-        myAbsorp.dcir = 0;      // valeurs à la structure myAbsorb en convertissant
-        myAbsorp.acr = 0;        // les char* en float
+
+        myAbsorp.acir = 0;                                  // Si c'est la fin du fichier on assigne la valeur 0
+        myAbsorp.dcir = 0;                                  // aux signaux
+        myAbsorp.acr = 0;
         myAbsorp.dcr = 0;
 
         return myAbsorp;
