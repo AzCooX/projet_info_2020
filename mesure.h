@@ -3,7 +3,7 @@
 typedef struct{
     float lastMaximum;
     float lastMinimum;
-    float compteur;
+    unsigned int compteur;
     float previousVal;
 }param_mesure;
 

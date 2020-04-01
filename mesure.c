@@ -12,20 +12,28 @@ void fin_mesure(param_mesure* myMes){
 }
 
 oxy mesure(oxy myOxy,absorp myAbsorp, param_mesure* myMes){
-	//Calcul du pouls   ( pas oublier de faire la moyenne)
-	float test;
+
+	float periode;	//Calcul du pouls   ( pas oublier de faire la moyenne)
 	if(myMes->previousVal<myAbsorp.acr && (myMes->previousVal)/(myAbsorp.acr)<0){	// si la nouvelle valeur et l'ancienne sont de signes opposés et que on est sur un front montant
-		test=(float)(1/((myMes->compteur)*0.002));
-		test=test*60;
-		myOxy.pouls=test;
+		periode=(float)(1/((myMes->compteur)*0.002));
+		periode=periode*60;
+		myOxy.pouls=(int)periode;
 		myMes->compteur=0;
 	}
 	myMes->previousVal=myAbsorp.acr;
 	myMes->compteur=myMes->compteur+1;
 
 	//Calcul SPO2
+	myOxy.spo2=0;
+	/*if(myMes->previousVal<myAbsorp.acr){	//montée de la courbe
 
+	}
+	if(myMes->previousVal>myAbsorp.acr){	//descente de a courbe
 
+	}
+	if(myAbsorp.acr>myMes->lastMaximum){
+		myMes->lastMaximum=myAbsorp.acr;
+	}*/
 	return myOxy;
 
 }
@@ -34,6 +42,8 @@ oxy mesureTest(char* filename){
 	int etat=0;
 	param_mesure* myMes = init_mesure();
 	oxy myOxy;
+	myOxy.spo2=0;
+	myOxy.pouls=0;
 	FILE* myFile = initFichier(filename);
 	do
 	{
