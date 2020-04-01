@@ -1,10 +1,15 @@
 #include "define.h"
 #include "fichiers.h"
 typedef struct{
-    float lastMaximum;
-    float lastMinimum;
+    float lastMaximumACR;
+    float lastMinimumACR;
+    float lastMaximumACIR;
+    float lastMinimumACIR;
     unsigned int compteur;
     float previousVal;
+    int oldPouls[10];        //tableau permettant le calcul d'une moyenne de pouls
+    int indexPouls;
+
 }param_mesure;
 
 param_mesure* init_mesure();
