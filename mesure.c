@@ -1,31 +1,76 @@
 #include "mesure.h"
 
 param_mesure* init_mesure(){
+    int i;
 	param_mesure* myMes = (param_mesure*)malloc(1*sizeof(param_mesure));
-	myMes->lastMaximum=0;
-	myMes->lastMinimum=0;
+	myMes->lastMaximumACR=0;
+	myMes->lastMinimumACR=0;
+    myMes->lastMaximumACIR=0;
+    myMes->lastMinimumACIR=0;
 	myMes->compteur=0;
 	myMes->previousVal=0;
+	myMes->indexPouls=0;
+	for(i=0;i<10;i++){
+        myMes->oldPouls[i]=0;
+	}
+	return myMes;
 }
 void fin_mesure(param_mesure* myMes){
 	free(myMes);
 }
 
 oxy mesure(oxy myOxy,absorp myAbsorp, param_mesure* myMes){
-	//Calcul du pouls   ( pas oublier de faire la moyenne)
-	float test;
+
+	float frequence;	//Calcul du pouls   ( pas oublier de faire la moyenne)
+	float ptpACR;
+	float ptpACIR;
+	float ratio;
+	int a,b;
 	if(myMes->previousVal<myAbsorp.acr && (myMes->previousVal)/(myAbsorp.acr)<0){	// si la nouvelle valeur et l'ancienne sont de signes opposés et que on est sur un front montant
-		test=(float)(1/((myMes->compteur)*0.002));
-		test=test*60;
-		myOxy.pouls=test;
+		frequence=(float)(1/((myMes->compteur)*0.002));
+		frequence=frequence*60;     //obtention BPM
 		myMes->compteur=0;
+		myOxy.pouls=(int)frequence;
+
 	}
 	myMes->previousVal=myAbsorp.acr;
 	myMes->compteur=myMes->compteur+1;
 
 	//Calcul SPO2
 
+	if(myAbsorp.acr>myMes->lastMaximumACR){
+		myMes->lastMaximumACR=myAbsorp.acr;
+	}
+	if(myAbsorp.acr<myMes->lastMinimumACR){
+	    myMes->lastMinimumACR=myAbsorp.acr;
+	}
+    if(myAbsorp.acir>myMes->lastMaximumACIR){
+        myMes->lastMaximumACIR=myAbsorp.acir;
+    }
+    if(myAbsorp.acir<myMes->lastMinimumACIR){
+        myMes->lastMinimumACIR=myAbsorp.acir;
+    }
+    ptpACR=(myMes->lastMaximumACR)-(myMes->lastMinimumACR);
+    ptpACIR=(myMes->lastMaximumACIR)-(myMes->lastMinimumACIR);
+    ratio=(ptpACR/myAbsorp.dcr)/(ptpACIR/myAbsorp.dcir);
+    if(ratio >= 0.4f && ratio <= 1.0f)
+    {
+        b = 110;
+        a = -25;
+    }
+    else
+    {
+        b = 121.42857;
+        a = -35.7142857;
+    }
+    myOxy.spo2 = ((int) (a*ratio + b));
+    if(myMes->previousVal<myAbsorp.acir && (myMes->previousVal)/(myAbsorp.acir)<0){
+        myMes->lastMinimumACIR=0;
+        myMes->lastMaximumACIR=0;
+        myMes->lastMinimumACR=0;
+        myMes->lastMaximumACR=0;
 
+    }
 	return myOxy;
 
 }
@@ -34,6 +79,8 @@ oxy mesureTest(char* filename){
 	int etat=0;
 	param_mesure* myMes = init_mesure();
 	oxy myOxy;
+	myOxy.spo2=0;
+	myOxy.pouls=0;
 	FILE* myFile = initFichier(filename);
 	do
 	{

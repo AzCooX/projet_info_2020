@@ -4,11 +4,13 @@
 #include "affichage.h"
 #include "iir.h"
 #include "fir.h"
+#include "mesure.h"
 int main() {
 
 
-   // affichage(test);
+    //affichage(test);
     //iirTest("record1_fir.dat");
-    firTest("record1.dat");
+    //firTest("record1.dat");
+    //mesureTest("record1_iir.dat");
     return 0;
 }
