@@ -1,4 +1,4 @@
-//#include "define.h"
+#include "define.h"
 //#include "affichage.h"
 //#include "iir.h"
 //#include "fir.h"

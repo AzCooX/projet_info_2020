@@ -8,7 +8,7 @@ typedef struct{
     unsigned int compteur;
     float previousVal;
     int oldPouls[10];        //tableau permettant le calcul d'une moyenne de pouls
-    int indexPouls;
+    unsigned int indexPouls;
     int pouls;
     int spo2;
 
