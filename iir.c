@@ -11,13 +11,13 @@ param_iir* init_iir(){      //initialise les membres d'une structure param_iir
     return myIIR;
 }
 
-absorp iir(absorp myAbsorp,param_iir* myIIR){       //calcule les nouvelles valeurs de ACR et ACIR
-myIIR->led=myAbsorp.acr-myIIR->lastEntryLed+0.992*myIIR->lastLed;
+absorp iir(absorp myAbsorp,param_iir* myIIR){
+myIIR->led=myAbsorp.acr-myIIR->lastEntryLed+0.992*myIIR->lastLed;   //application de la formule de filtrage pour ACR
 myIIR->lastEntryLed=myAbsorp.acr;
 myIIR->lastLed=myIIR->led;
 myAbsorp.acr=myIIR->led;
 
-myIIR->infrarouge=myAbsorp.acir-myIIR->lastEntryInfrarouge+0.992*myIIR->lastInfrarouge;
+myIIR->infrarouge=myAbsorp.acir-myIIR->lastEntryInfrarouge+0.992*myIIR->lastInfrarouge; //application de la formule de filtrage pour ACIR
 myIIR->lastEntryInfrarouge=myAbsorp.acir;
 myIIR->lastInfrarouge=myIIR->infrarouge;
 myAbsorp.acir=myIIR->infrarouge;
@@ -25,7 +25,7 @@ myAbsorp.acir=myIIR->infrarouge;
 return myAbsorp;
 }
 
-void fin_iir(param_iir* myIIR){
+void fin_iir(param_iir* myIIR){     //libère l'espace mémoire alloué dans le init
     free(myIIR);
 }
 absorp iirTest(char* filename){
