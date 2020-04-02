@@ -26,72 +26,76 @@ int calculPouls(absorp myAbsorp,param_mesure* myMes){
 	if(myMes->previousVal<myAbsorp.acr && (myMes->previousVal)/(myAbsorp.acr)<0){	// si la nouvelle valeur et l'ancienne sont de signes opposés et que on est sur un front montant
 		frequence=(float)(1/((myMes->compteur)*0.002));
 		frequence=frequence*60;     //obtention BPM
-		myMes->compteur=0;
+		myMes->compteur=0;		//remise du compteur à 0 pour commencer à compter une nouvelle période
 		myMes->oldPouls[(myMes->indexPouls%10)]=(int)frequence;
 		myMes->indexPouls++;
-		for(i=0;i<10;i++){
+		for(i=0;i<10;i++){		//moyenne des 10 dernières valeurs du pouls
 			moyenne=moyenne+myMes->oldPouls[i];
 		}
-
 		if(myMes->indexPouls<10){
 			moyenne=(moyenne/myMes->indexPouls);
 		}else{
 			moyenne=moyenne/10;
 		}
 		myMes->pouls=moyenne;
-		printf("valeur Pouls: %d\n",moyenne);
+		//printf("valeur Pouls: %d\n",moyenne);
 		return moyenne;
 	}else{
 		return myMes->pouls;
 	}
 }
-oxy mesure(absorp myAbsorp, param_mesure* myMes){
 
-	oxy myOxy;
+int calculSpo2(absorp myAbsorp, param_mesure* myMes){
 	float ptpACR;   //stocke la valeur peak to peak d'ACR
 	float ptpACIR;  //stocke la valeur peak to peak d'ACIR
 	float ratio;
-	int a,b;
+	int a,b,stock;
 
-	myOxy.pouls=calculPouls(myAbsorp,myMes);
-
-	//Calcul SPO2
-
-	if(myAbsorp.acr>myMes->lastMaximumACR){
-		myMes->lastMaximumACR=myAbsorp.acr;
+	if(myAbsorp.acr>myMes->lastMaximumACR){  //compare la valeur ACR actuellement considéré comme maximum de la période avec la nouvelle reçue
+		myMes->lastMaximumACR=myAbsorp.acr;  //si cette dernière est supérieur on la prend comme maximum
 	}
 	if(myAbsorp.acr<myMes->lastMinimumACR){
-	    myMes->lastMinimumACR=myAbsorp.acr;
+		myMes->lastMinimumACR=myAbsorp.acr;
 	}
-    if(myAbsorp.acir>myMes->lastMaximumACIR){
-        myMes->lastMaximumACIR=myAbsorp.acir;
-    }
-    if(myAbsorp.acir<myMes->lastMinimumACIR){
-        myMes->lastMinimumACIR=myAbsorp.acir;
-    }
-    ptpACR=(myMes->lastMaximumACR)-(myMes->lastMinimumACR);
-    ptpACIR=(myMes->lastMaximumACIR)-(myMes->lastMinimumACIR);
-    ratio=(ptpACR/(myAbsorp.dcr));
-    ratio=ratio/(ptpACIR/(myAbsorp.dcir));
-    if(ratio >= 0.4f && ratio <= 1.0f)
-    {
-        b = 110;
-        a = -25;
-    }
-    else
-    {
-        b = 121.42857;
-        a = -35.7142857;
-    }
-    myOxy.spo2 = ((int) (a*ratio + b));
-    if(myMes->previousVal<myAbsorp.acir && (myMes->previousVal)/(myAbsorp.acir)<0){
-        myMes->lastMinimumACIR=0;
-        myMes->lastMaximumACIR=0;
-        myMes->lastMinimumACR=0;
-        myMes->lastMaximumACR=0;
-    }
+	if(myAbsorp.acir>myMes->lastMaximumACIR){
+		myMes->lastMaximumACIR=myAbsorp.acir;
+	}
+	if(myAbsorp.acir<myMes->lastMinimumACIR){
+		myMes->lastMinimumACIR=myAbsorp.acir;
+	}
+	ptpACR=(myMes->lastMaximumACR)-(myMes->lastMinimumACR);	//obtention valeur peak to peak d'ACR
+	ptpACIR=(myMes->lastMaximumACIR)-(myMes->lastMinimumACIR);	//obtention valeur peak to peak d'ACIR
+	ratio=(ptpACR/(myAbsorp.dcr));
+	ratio=ratio/(ptpACIR/(myAbsorp.dcir));
+	if(ratio >= 0.4f && ratio <= 1.0f)	//
+	{
+		b = 110;
+		a = -25;
+	}
+	else
+	{
+		b = 121.42857;
+		a = -35.7142857;
+	}
+	stock = ((int) (a*ratio + b));	//obtention valeur SPO2
+	if(myMes->previousVal<myAbsorp.acir && (myMes->previousVal)/(myAbsorp.acir)<0){ //remise à 0 pour commencer une nouvelle période
+		myMes->lastMinimumACIR=0;
+		myMes->lastMaximumACIR=0;
+		myMes->lastMinimumACR=0;
+		myMes->lastMaximumACR=0;
+	}
 	myMes->previousVal=myAbsorp.acr;
 	myMes->compteur=myMes->compteur+1;
+	return stock;
+}
+
+oxy mesure(absorp myAbsorp, param_mesure* myMes){
+
+	oxy myOxy;
+
+	myOxy.pouls=calculPouls(myAbsorp,myMes);
+	myOxy.spo2=calculSpo2(myAbsorp,myMes);
+
 	return myOxy;
 
 }

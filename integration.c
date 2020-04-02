@@ -20,7 +20,7 @@ void integrationTest(char* filename)    //rien include dans .h et tout dans .c?
             myAbsorp = fir(myAbsorp, myFIR);
             myAbsorp = iir(myAbsorp, myIIR);
             myOxy= mesure(myAbsorp,myMes);
-           // printf("valeur SPO2: %d\n",myOxy.spo2);
+            //printf("valeur SPO2: %d\n",myOxy.spo2);
             //printf("valeur Pouls: %d\n",myOxy.pouls);
             affichage(myOxy);
         }
