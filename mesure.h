@@ -1,16 +1,15 @@
 #include "define.h"
 #include "fichiers.h"
 typedef struct{
-    float lastMaximumACR;
-    float lastMinimumACR;
-    float lastMaximumACIR;
-    float lastMinimumACIR;
-    unsigned int compteur;
+    float lastMaximumACR;       //permet de stocker le maximum d'ACR trouvé sur la période
+    float lastMinimumACR;       //permet de stocker le minimum d'ACR trouvé sur la période
+    float lastMaximumACIR;      //permet de stocker le maximum d'ACIR trouvé sur la période
+    float lastMinimumACIR;      //permet de stocker le minimum d'ACIR trouvé sur la période
+    unsigned int compteur;  //permet de compter le nombre de points trouvé sur une période
     float previousVal;
     int oldPouls[10];        //tableau permettant le calcul d'une moyenne de pouls
-    unsigned int indexPouls;
+    unsigned int indexPouls;    //index permettant l'utilisation du tableau oldPouls
     int pouls;
-    int spo2;
 
 }param_mesure;
 

@@ -11,7 +11,6 @@ param_mesure* init_mesure(){
 	myMes->previousVal=0;
 	myMes->indexPouls=0;
 	myMes->pouls=0;
-	myMes->spo2=0;
 	for(i=0;i<10;i++){
         myMes->oldPouls[i]=0;
 	}
@@ -25,11 +24,10 @@ oxy mesure(absorp myAbsorp, param_mesure* myMes){
 
 	oxy myOxy;
 	float frequence;
-	float ptpACR;
-	float ptpACIR;
+	float ptpACR;   //stocke la valeur peak to peak d'ACR
+	float ptpACIR;  //stocke la valeur peak to peak d'ACIR
 	float ratio;
 	int a,b,i;
-	int div;
 	int moyenne=0;
 
 	//calcul Pouls
