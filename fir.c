@@ -27,12 +27,12 @@ absorp fir(absorp myAbsorp,param_fir* myFIR){
     myFIR->infrarouge[myFIR->index]=myAbsorp.acir;
     myAbsorp.acr=0;
     myAbsorp.acir=0;
-    for(i=0;i<=50;i++) {
-        position = myFIR->index-i;
-        if(position<0){
+    for(i=0;i<=50;i++) {        //début application fonction de filtrage
+        position = myFIR->index-i;  //position prendra toutes les valeurs d'index du tableau
+        if(position<0){     //permet d'accéder aux valeurs du tableau à un index supérieur à myFIR->index sans tomber dans les négatifs
             position+=51;
         }
-        myAbsorp.acr += coef[i] * myFIR->led[position];     //pas sur
+        myAbsorp.acr += coef[i] * myFIR->led[position];
         myAbsorp.acir += coef[i] * myFIR->infrarouge[position];
     }
     myFIR->index=((myFIR->index)+1)%50;
