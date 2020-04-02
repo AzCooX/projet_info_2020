@@ -19,19 +19,10 @@ param_mesure* init_mesure(){
 void fin_mesure(param_mesure* myMes){
 	free(myMes);
 }
-
-oxy mesure(absorp myAbsorp, param_mesure* myMes){
-
-	oxy myOxy;
+int calculPouls(absorp myAbsorp,param_mesure* myMes){
 	float frequence;
-	float ptpACR;   //stocke la valeur peak to peak d'ACR
-	float ptpACIR;  //stocke la valeur peak to peak d'ACIR
-	float ratio;
-	int a,b,i;
+	int i;
 	int moyenne=0;
-
-	//calcul Pouls
-
 	if(myMes->previousVal<myAbsorp.acr && (myMes->previousVal)/(myAbsorp.acr)<0){	// si la nouvelle valeur et l'ancienne sont de signes opposés et que on est sur un front montant
 		frequence=(float)(1/((myMes->compteur)*0.002));
 		frequence=frequence*60;     //obtention BPM
@@ -47,12 +38,22 @@ oxy mesure(absorp myAbsorp, param_mesure* myMes){
 		}else{
 			moyenne=moyenne/10;
 		}
-		myOxy.pouls=moyenne;
 		myMes->pouls=moyenne;
-		printf("valeur Pouls: %d\n",myOxy.pouls);
+		printf("valeur Pouls: %d\n",moyenne);
+		return moyenne;
 	}else{
-		myOxy.pouls=myMes->pouls;
+		return myMes->pouls;
 	}
+}
+oxy mesure(absorp myAbsorp, param_mesure* myMes){
+
+	oxy myOxy;
+	float ptpACR;   //stocke la valeur peak to peak d'ACR
+	float ptpACIR;  //stocke la valeur peak to peak d'ACIR
+	float ratio;
+	int a,b;
+
+	myOxy.pouls=calculPouls(myAbsorp,myMes);
 
 	//Calcul SPO2
 

@@ -15,6 +15,7 @@ typedef struct{
 
 param_mesure* init_mesure();
 void fin_mesure(param_mesure* myMes);
+int calculPouls(absorp myAbsorp,param_mesure* myMes);
 oxy mesure(absorp myAbsorp, param_mesure* myMes);
 oxy mesureTest(char* filename);
 
