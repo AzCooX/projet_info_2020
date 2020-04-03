@@ -1,15 +1,8 @@
 #include "affichage.h"
 
-void affichageTest(int a, int b){
-    oxy test;
-    test.pouls = a;
-    test.spo2 = b;
-    affichage(test);    // Regarder si les valeurs dans Data.txt ont bien changé
-}
-
 void affichage(oxy myOxy) {
     if (access(".verrouData", F_OK) == 0) {     // Avant de mettre à jour le fichier on vérifie qu'il n'est pas déjà en écriture
-
+        printf("Le fichier est en cours d'utilisation");
     } else {
         FILE* verrouData = fopen(".verrouData", "a");       // Si le fichier n'existe on le crée avant d'écrire sur Data.txt
         FILE* data = fopen("Data.txt", "w");                // On ouvre le fichier Data.txt
